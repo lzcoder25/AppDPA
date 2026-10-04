@@ -33,8 +33,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController){
-    var email  by remember { mutableStateOf("") }
-    var password  by remember { mutableStateOf("") }
+    var email  by remember { mutableStateOf("lapadula@peru.com") }
+    var password  by remember { mutableStateOf("88888888") }
 
     val context = LocalContext.current
 

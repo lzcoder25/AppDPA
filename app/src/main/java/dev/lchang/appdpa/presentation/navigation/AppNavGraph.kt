@@ -8,6 +8,7 @@ import dev.lchang.appdpa.presentation.auth.LoginScreen
 import dev.lchang.appdpa.presentation.auth.RegisterScreen
 import dev.lchang.appdpa.presentation.home.HomeScreen
 import dev.lchang.appdpa.presentation.permissions.GalleryPermissionsScreen
+import dev.lchang.appdpa.presentation.realtime.FirestoreRealtimeScreen
 
 @Composable
 fun AppNavGraph(){
@@ -15,7 +16,7 @@ fun AppNavGraph(){
 
     NavHost(
         navController = navController,
-        startDestination = "register")
+        startDestination = "login")
     {
         composable("register") { RegisterScreen(navController) }
         composable("login") { LoginScreen(navController) }
@@ -27,6 +28,11 @@ fun AppNavGraph(){
         composable("permissions") {
             DrawerScaffold(navController) {
                 GalleryPermissionsScreen()
+            }
+        }
+        composable("realtime") {
+            DrawerScaffold(navController) {
+                FirestoreRealtimeScreen()
             }
         }
     }
