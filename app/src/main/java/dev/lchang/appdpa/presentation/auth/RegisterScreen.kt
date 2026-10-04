@@ -1,5 +1,6 @@
 package dev.lchang.appdpa.presentation.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,12 +26,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.lchang.appdpa.data.remote.FirebaseAuthManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -40,6 +46,8 @@ fun RegisterScreen(navController: NavController) {
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -128,8 +136,18 @@ fun RegisterScreen(navController: NavController) {
                         && phoneNumber.isNotEmpty()
                     && password.isNotEmpty(),
             onClick = {
-                // Acción de registro hacia la base de datos
-                navController.navigate("login")
+                CoroutineScope(Dispatchers.Main).launch {
+                    val result = FirebaseAuthManager
+                                .registerUser(fullName, email, password, dob, phoneNumber)
+                    if(result.isSuccess){
+                        navController.navigate("login")
+                    }else{
+                        // Handle error
+                        val exception = result.exceptionOrNull()
+                        Toast.makeText(context, exception?.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+
             },
             modifier = Modifier.fillMaxWidth()
         ) {

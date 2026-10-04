@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25808408245",
+    "project_id": "appdpa-e93c3",
+    "storage_bucket": "appdpa-e93c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25808408245:android:023ee2cf17a47d8d67f8fc",
+        "android_client_info": {
+          "package_name": "dev.lchang.appdpa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsPMlT74T7rHo84_dS5mtsFbBuzSxBX_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

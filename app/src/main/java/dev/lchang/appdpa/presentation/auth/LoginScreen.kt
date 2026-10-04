@@ -2,6 +2,7 @@ package dev.lchang.appdpa.presentation.auth
 
 import android.R
 import android.widget.NumberPicker
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,14 +22,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.lchang.appdpa.data.remote.FirebaseAuthManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun LoginScreen(navController: NavController){
     var email  by remember { mutableStateOf("") }
     var password  by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -57,9 +65,16 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            // Acción de inicio de sesión
-            // Si las credenciales son correctas, navegar a la pantalla de inicio
-            navController.navigate("home")
+            CoroutineScope(Dispatchers.Main).launch {
+                val result = FirebaseAuthManager.loginUser( email, password)
+                if(result.isSuccess){
+                    navController.navigate("home")
+                }else{
+                    // Handle error
+                    val exception = result.exceptionOrNull()
+                    Toast.makeText(context, exception?.message, Toast.LENGTH_LONG).show()
+                }
+            }
         }) {
             Text("Ingresar")
         }
